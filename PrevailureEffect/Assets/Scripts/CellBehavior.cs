@@ -22,7 +22,7 @@ public class CellBehavior : MonoBehaviour
     /// <summary>
     /// The Cell Entity Can Be Either A Player Or Cpu Entity; This Value Is Set On Start() In Subclasses.
     /// </summary>
-    EntityState m_CellEntity;
+   // EntityState m_CellEntity;
 
     [SerializeField]
     private bool m_IndependentDebugging;
@@ -113,8 +113,8 @@ public class CellBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (m_CellEntity == null)
-            return;
+        /*if (m_CellEntity == null)
+            return;*/
 
         if(m_PositionLastFrame != Vector3.negativeInfinity)
             m_PositionDelta = transform.position - m_PositionLastFrame;
@@ -130,7 +130,7 @@ public class CellBehavior : MonoBehaviour
                 1.5f
             ));
 
-        if (!m_IsGrounded && m_CellEntity is PlayerEntity)
+        /*if (!m_IsGrounded && m_CellEntity is PlayerEntity)
         {
             m_IsGrounded = (Physics.SphereCast
             (
@@ -140,7 +140,7 @@ public class CellBehavior : MonoBehaviour
                 out m_GroundingSphereHitInfo,
                 1f
             ));
-        }
+        }*/
 
         m_PositionLastFrame = transform.position;
     }
@@ -158,7 +158,7 @@ public class CellBehavior : MonoBehaviour
         if (m_CellBody == null)
             return;
 
-        if (m_CellEntity is PlayerEntity)
+        /*if (m_CellEntity is PlayerEntity)
         {
             if (m_CellBody.position.y < -100)
             {
@@ -170,13 +170,13 @@ public class CellBehavior : MonoBehaviour
 
                 m_CellBody.position = m_PositionDelta;
             }
-        }
+        }*/
 
         else if (m_CellBody.position.y < -100)
             Destroy(gameObject);
     }
 
-    internal void SetCellEntity(EntityState entity)
+    /*internal void SetCellEntity(EntityState entity)
     {
         if (entity != null)
             m_CellEntity = entity;
@@ -220,9 +220,9 @@ public class CellBehavior : MonoBehaviour
             Debug.Log(gameObject.name + " Moving " + m_DesiredVelocity.ToString("r5"));
             Debug.Log(gameObject.name + " Is Grounded: " + m_IsGrounded);
         }
-    }
+    }*/
 
-    internal void Jump(float modifier = 1)
+    /*internal void Jump(float modifier = 1)
     {
         if (!m_CellEntity.ConsumeEnergy(modifier))
             return;
@@ -254,7 +254,7 @@ public class CellBehavior : MonoBehaviour
                 Debug.Log(gameObject.name + " Was Moving On Jump: " + m_WasMovingOnJump);
             }
         }
-    }
+    }*/
 
     private IEnumerator QueueLanding()
     {
@@ -280,13 +280,13 @@ public class CellBehavior : MonoBehaviour
         {
             m_DesiredVelocity.z = ((m_CellSpeed / Mass) * modifier);
 
-            if (m_IsGrounded)
+            /*if (m_IsGrounded)
                 Utility.AlterBodyVelocity
                     (m_CellBody, (gameObject.transform.rotation * m_DesiredVelocity), false);
 
             else if (!m_IsGrounded && m_HasJumped && !m_WasMovingOnJump)
                 Utility.AlterBodyVelocity
-                    (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);
+                    (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);*/
 
             if (m_IndependentDebugging)
             {
@@ -302,13 +302,13 @@ public class CellBehavior : MonoBehaviour
         {
             m_DesiredVelocity.z = -((m_CellSpeed / Mass) * modifier);
 
-            if (m_IsGrounded)
+            /*if (m_IsGrounded)
                 Utility.AlterBodyVelocity
                     (m_CellBody, (gameObject.transform.rotation * m_DesiredVelocity), false);
 
             else if (!m_IsGrounded && m_HasJumped && !m_WasMovingOnJump)
                 Utility.AlterBodyVelocity
-                (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);
+                (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);*/
 
             if (m_IndependentDebugging)
             {
@@ -325,13 +325,13 @@ public class CellBehavior : MonoBehaviour
         {
             m_DesiredVelocity.x = (m_CellSpeed / Mass) * modifier;
 
-            if (m_IsGrounded)
+            /*if (m_IsGrounded)
                 Utility.AlterBodyVelocity
                     (m_CellBody, (gameObject.transform.rotation * m_DesiredVelocity), false);
 
             else if (!m_IsGrounded && m_HasJumped && !m_WasMovingOnJump)
                 Utility.AlterBodyVelocity
-                (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);
+                (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);*/
 
             if (m_IndependentDebugging)
             {
@@ -347,13 +347,13 @@ public class CellBehavior : MonoBehaviour
         {
             m_DesiredVelocity.x = -(m_CellSpeed / Mass) * modifier;
 
-            if (m_IsGrounded)
+            /*if (m_IsGrounded)
                 Utility.AlterBodyVelocity
                     (m_CellBody, (gameObject.transform.rotation * m_DesiredVelocity), false);
 
             else if (!m_IsGrounded && m_HasJumped && !m_WasMovingOnJump)
                 Utility.AlterBodyVelocity
-                (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);
+                (m_CellBody, (gameObject.transform.rotation * (m_DesiredVelocity * (Utility.Phi / 10))), false);*/
 
             if (m_IndependentDebugging)
             {

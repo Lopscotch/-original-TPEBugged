@@ -40,12 +40,12 @@ public class CameraHandler : MonoBehaviour {
 
     void Start()
     {
-        MainEngine.AttachCameraHandler(this);
+       // MainEngine.AttachCameraHandler(this);
 
         if(m_UseFog)
             StartCoroutine(SetFog());
 
-        PlayerOriginObject.OnPlayerSpawn += PlayerOriginObject_OnPlayerSpawn;
+        //PlayerOriginObject.OnPlayerSpawn += PlayerOriginObject_OnPlayerSpawn;
 
         OnMainCameraChange += CameraHandler_OnMainCameraChange;
 
@@ -58,7 +58,7 @@ public class CameraHandler : MonoBehaviour {
 
     private void OnDestroy()
     {
-        PlayerOriginObject.OnPlayerSpawn -= PlayerOriginObject_OnPlayerSpawn;
+       // PlayerOriginObject.OnPlayerSpawn -= PlayerOriginObject_OnPlayerSpawn;
     }
 
     private void CameraHandler_OnMainCameraChange(Camera camera)
@@ -66,11 +66,11 @@ public class CameraHandler : MonoBehaviour {
         ChangeMainCamera(camera);
     }
 
-    private void PlayerOriginObject_OnPlayerSpawn(PlayerEntity player)
+    /*private void PlayerOriginObject_OnPlayerSpawn(PlayerEntity player)
     {
         if (player.PlayerCamera != null)
             SetMainCamera(player.PlayerCamera);
-    }
+    }*/
 
     internal void SetMainCamera(Camera camera)
     {
