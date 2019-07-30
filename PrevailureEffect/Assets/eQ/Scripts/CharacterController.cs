@@ -149,8 +149,14 @@ namespace eq
 
         void Crouch()
         {
+
             m_ControllerCollider.height = 1;
+
+            AlterBodyVelocity
+                (m_ControllerRigidBody, m_ControllerRigidBody.velocity * Mathf.PI, false);
+
             m_IsCrouched = true;
+
             if (m_CrouchRoutine != null)
                 StopCoroutine(m_CrouchRoutine);
 
@@ -161,6 +167,7 @@ namespace eq
         {
             m_ControllerCollider.height = 2;
             m_IsCrouched = false;
+
             if (m_CrouchRoutine != null)
                 StopCoroutine(m_CrouchRoutine);
         }
@@ -170,9 +177,6 @@ namespace eq
 
         IEnumerator CrouchRoutine()
         {
-            AlterBodyVelocity
-                (m_ControllerRigidBody, m_ControllerRigidBody.velocity * Mathf.PI, false);
-
             yield return new WaitForFixedUpdate();
 
             AlterBodyVelocity
