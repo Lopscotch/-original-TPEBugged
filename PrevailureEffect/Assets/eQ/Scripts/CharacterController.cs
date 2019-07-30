@@ -19,6 +19,8 @@ namespace eq
         float m_MovementSpeedModifier = Mathf.PI;
         [SerializeField]
         float m_JumpSpeedModifier = 2;
+        [SerializeField]
+        float m_CrouchVelocityDrag = 1;
 
         Vector3 m_PlayerRotation = Vector3.one;
 
@@ -29,11 +31,16 @@ namespace eq
         Coroutine m_GroundingDecayRoutine;
 
         Rigidbody m_ControllerRigidBody;
+        CapsuleCollider m_ControllerCollider;
 
         private void OnEnable()
         {
             if ((m_ControllerRigidBody = GetComponent<Rigidbody>()) == null)
                 if ((m_ControllerRigidBody = GetComponentInChildren<Rigidbody>()) == null)
+                    return;
+
+            if ((m_ControllerCollider = GetComponent<CapsuleCollider>()) == null)
+                if ((m_ControllerCollider = GetComponentInChildren<CapsuleCollider>()) == null)
                     return;
 
             MainEngine.OnMainFixedUpdate += MainEngine_OnMainFixedUpdate;
@@ -49,7 +56,7 @@ namespace eq
             (
                 transform.position,
                 gameObject.transform.rotation * Vector3.down,
-                0.55f
+                1.5f
             ));
         }
 
@@ -91,21 +98,28 @@ namespace eq
         private void InputEventSink_OnMouseClick(MouseInputEventArgs args)
         {
         }
-
-        private void InputEventSink_OnKeyUp(KeyCode keycode)
-        {
-        }
-
         private void InputEventSink_OnMouseUp(MouseInputEventArgs args)
         {
         }
-
         private void InputEventSink_OnMouseHold(MouseInputEventArgs args)
         {
         }
         private void InputEventSink_OnKeyHold(KeyCode keycode)
         {
         }
+
+        private void InputEventSink_OnKeyUp(KeyCode keycode)
+        {
+            switch (keycode)
+            {
+                case KeyCode.C:
+                    {
+                        UnCrouch();
+                        break;
+                    }
+            }
+        }
+
 
         private void InputEventSink_OnMouseMove(MouseInputEventArgs args)
         {
@@ -121,6 +135,11 @@ namespace eq
                         Jump();
                         break;
                     }
+                case KeyCode.C:
+                    {
+                        Crouch();
+                        break;
+                    }
                 default:
                     if(m_IndependentDebugging)
                         Debug.LogErrorFormat
@@ -128,13 +147,53 @@ namespace eq
             }
         }
 
+        void Crouch()
+        {
+            m_ControllerCollider.height = 1;
+            m_IsCrouched = true;
+            if (m_CrouchRoutine != null)
+                StopCoroutine(m_CrouchRoutine);
+
+            StartCoroutine(CrouchRoutine());
+        }
+
+        void UnCrouch()
+        {
+            m_ControllerCollider.height = 2;
+            m_IsCrouched = false;
+            if (m_CrouchRoutine != null)
+                StopCoroutine(m_CrouchRoutine);
+        }
+
+        bool m_IsCrouched;
+        Coroutine m_CrouchRoutine;
+
+        IEnumerator CrouchRoutine()
+        {
+            AlterBodyVelocity
+                (m_ControllerRigidBody, m_ControllerRigidBody.velocity * Mathf.PI, false);
+
+            yield return new WaitForFixedUpdate();
+
+            AlterBodyVelocity
+                (m_ControllerRigidBody, -(Vector3.one * 0.002f), false);
+
+            if(m_IsCrouched)
+            {
+                if (m_CrouchRoutine != null)
+                    StopCoroutine(m_CrouchRoutine);
+
+                StartCoroutine(CrouchRoutine());
+            }
+       }
+
         private void InputEventSink_OnAxisInput(Vector2 input)
         {
             ProcessAxisInput(input, m_MovementSpeedModifier);
         }
-
+        
         internal void ProcessAxisInput(Vector2 input, float modifier = 1)
-        {
+        { 
             float x = (input.x * modifier);
             float z = (input.y * modifier);
 
@@ -143,7 +202,7 @@ namespace eq
 
             if (m_IsGrounded)
                 AlterBodyVelocity
-                    (m_ControllerRigidBody, (gameObject.transform.rotation.normalized * m_DeltaVector), false);
+                    (m_ControllerRigidBody, (gameObject.transform.rotation * m_DeltaVector), false);
         }
 
         private void ModifyPlayerRotation(Vector2 delta)
@@ -172,7 +231,8 @@ namespace eq
         {
             if (m_IsGrounded)
             {
-                AlterBodyVelocity(m_ControllerRigidBody, Vector3.up * m_JumpSpeedModifier, true);
+                AlterBodyVelocity
+                    (m_ControllerRigidBody, Vector3.up * m_JumpSpeedModifier, true);
             }
         }
 
