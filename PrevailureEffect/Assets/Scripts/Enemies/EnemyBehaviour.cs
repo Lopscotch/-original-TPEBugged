@@ -19,7 +19,7 @@ public class EnemyBehaviour : MonoBehaviour
 		player = GameObject.FindGameObjectWithTag("Player");
 		playerHealth = player.GetComponent<PlayerHealth>();
 		enemyHealth = GetComponent<EnemyHealth>();
-0	}
+	}
 
 	void OnTriggerEnter(Collider other)
 	{
