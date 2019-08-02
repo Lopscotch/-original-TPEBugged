@@ -4,18 +4,28 @@ public class Gun : MonoBehaviour
 {
     public float damage = 10f;
     public float range = 100f;
+    public float fireRate = 15f;
+    public float impactForce = 30f;
+
     public Camera fpsCam;
+    public ParticleSystem MuzzleFlash;
+    public GameObject impactEffect;
+
+    public float nextTimeToFire = 0f;
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1")&& Time.time >= nextTimeToFire)
         {
-            Shoot();
+            nextTimeToFire = Time.time + 1f / fireRate;
+                Shoot();
         }
 
     }
     void Shoot()
     {
+        MuzzleFlash.Play();
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
