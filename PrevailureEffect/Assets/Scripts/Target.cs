@@ -1,23 +1,35 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Target : MonoBehaviour
 {
+	//Adding enemy health UI
+    public float startingHealth = 50f;
+	public float currentHealth;
 
-    public float health = 50f;
+	public Image healthBar;
+
+	void Awake()
+	{
+		currentHealth = startingHealth;
+	}
 
     public void TakeDamage(float amount)
     {
-        health -= amount;
-        if (health <= 0f)
+        currentHealth -= amount;
+		healthBar.fillAmount = currentHealth / startingHealth;
+
+        if (currentHealth <= 0f)
         {
             Die();
         }
-        }
+    }
+
     void Die()
-    {
+	{
         Destroy(gameObject);
     }
 
-    }
+ }
 
 
