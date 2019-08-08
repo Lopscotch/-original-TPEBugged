@@ -70,6 +70,7 @@ public class AIDynamicPatrolling : MonoBehaviour {
         m_vCurrentPosition      = this.transform.position;
         m_vOriginalYPosition    = this.transform.position.y;
         m_PatrolPathLenght      = m_PatrolPath.Length;
+        
 
         if ( m_PatrolPath.Length > 0 ) {
             m_PatrolCheckPoint  = m_PatrolPath[ m_PatrolCurrentStep ];
@@ -78,8 +79,8 @@ public class AIDynamicPatrolling : MonoBehaviour {
         }
 
         m_tcmTimeManager = new TimeCountManager();
+        
     }
-
     public void PerformWalking() {
 		
 		if ( m_tcmTimeManager.TimePassed > m_fTimeToWait || m_bWarningEnded ) {
