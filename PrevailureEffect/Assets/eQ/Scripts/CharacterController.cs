@@ -149,11 +149,7 @@ namespace eq
 
         void Crouch()
         {
-
             m_ControllerCollider.height = 1;
-
-            AlterBodyVelocity
-                (m_ControllerRigidBody, m_ControllerRigidBody.velocity * Mathf.PI, false);
 
             m_IsCrouched = true;
 
@@ -179,9 +175,6 @@ namespace eq
         {
             yield return new WaitForFixedUpdate();
 
-            AlterBodyVelocity
-                (m_ControllerRigidBody, -(Vector3.one * 0.002f), false);
-
             if(m_IsCrouched)
             {
                 if (m_CrouchRoutine != null)
@@ -203,6 +196,9 @@ namespace eq
 
             m_DeltaVector.x = x;
             m_DeltaVector.z = z;
+
+            if (m_IsCrouched)
+                m_DeltaVector *= 0.333f;
 
             if (m_IsGrounded)
                 AlterBodyVelocity
